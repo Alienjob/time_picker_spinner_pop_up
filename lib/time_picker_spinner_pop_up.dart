@@ -30,6 +30,7 @@ class TimePickerSpinnerPopUp extends StatefulWidget {
     this.cancelText = 'Cancel',
     this.confirmText = 'OK',
     this.isCancelTextLeft = false,
+    this.width,
   }) : super(key: key);
 
   /// Type of press to show pop up, default is [PressType.singlePress]
@@ -89,6 +90,9 @@ class TimePickerSpinnerPopUp extends StatefulWidget {
   /// The position of [cancelText], default is right
   /// If [isCancelTextLeft] is true, [cancelText] will be on left
   final bool isCancelTextLeft;
+
+  /// Width of popup menu
+  final double? width;
 
   @override
   _TimePickerSpinnerPopUpState createState() => _TimePickerSpinnerPopUpState();
@@ -251,7 +255,8 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
         double screenWidth = MediaQuery.of(context).size.width;
         double screenHeight = MediaQuery.of(context).size.height;
 
-        final size = _childBox!.size;
+        final size =
+            Size(widget.width ?? _childBox!.size.width, _childBox!.size.height);
         final offset = _childBox!.localToGlobal(const Offset(0, 0));
 
         if (widget.paddingHorizontalOverlay != null) {
