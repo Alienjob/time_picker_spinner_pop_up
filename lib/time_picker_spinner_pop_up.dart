@@ -31,6 +31,7 @@ class TimePickerSpinnerPopUp extends StatefulWidget {
     this.confirmText = 'OK',
     this.isCancelTextLeft = false,
     this.width,
+    this.height = 225,
   }) : super(key: key);
 
   /// Type of press to show pop up, default is [PressType.singlePress]
@@ -93,6 +94,9 @@ class TimePickerSpinnerPopUp extends StatefulWidget {
 
   /// Width of popup menu
   final double? width;
+
+  /// Width of popup menu
+  final double height;
 
   @override
   _TimePickerSpinnerPopUpState createState() => _TimePickerSpinnerPopUpState();
@@ -252,6 +256,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
   _showMenu() {
     _overlayEntry = OverlayEntry(
       builder: (context) {
+        const double buttonsHeight = 30;
         double screenWidth = MediaQuery.of(context).size.width;
         double screenHeight = MediaQuery.of(context).size.height;
 
@@ -327,6 +332,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
         Widget menu = Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 3, color: Colors.white),
             color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
@@ -341,7 +347,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 225,
+                height: (widget.height) - buttonsHeight,
                 child: CupertinoTheme(
                   data: CupertinoThemeData(
                     textTheme: CupertinoTextThemeData(
@@ -417,7 +423,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
             double right = screenWidth -
                 (centerHorizontal +
                     (((size.width) / 2 + _paddingHorizontal) * value));
-            double? top = offset.dy - ((220 / 2) * value);
+            double? top = offset.dy - ((widget.height/2 - 5) * value);
             double? bottom;
 
             if (left < 0) {
@@ -435,7 +441,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
               bottom = null;
             }
 
-            if (top + 240 > screenHeight) {
+            if (top + widget.height + 5 > screenHeight) {
               bottom = 5;
               top = null;
             }
@@ -445,11 +451,13 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
               right: right,
               top: top,
               bottom: bottom,
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 250 * value,
-                  ),
-                  child: SingleChildScrollView(child: menu)),
+              child: SafeArea(
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: (widget.height) * value,
+                    ),
+                    child: SingleChildScrollView(child: menu)),
+              ),
             );
           },
         );
