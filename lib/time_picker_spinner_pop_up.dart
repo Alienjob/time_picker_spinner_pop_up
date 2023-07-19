@@ -441,7 +441,7 @@ class _TimePickerSpinnerPopUpState extends State<TimePickerSpinnerPopUp>
               bottom = null;
             }
 
-            if (top + widget.height + 5 > screenHeight) {
+            if (top + widget.height + buttonsHeight  > screenHeight) {
               bottom = 5;
               top = null;
             }
